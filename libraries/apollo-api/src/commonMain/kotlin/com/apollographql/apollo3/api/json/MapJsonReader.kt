@@ -1,12 +1,40 @@
 package com.apollographql.apollo3.api.json
 
 import com.apollographql.apollo3.api.json.BufferedSourceJsonReader.Companion.MAX_STACK_SIZE
-import com.apollographql.apollo3.api.json.MapJsonReader.Companion.buffer
 import com.apollographql.apollo3.api.json.internal.toDoubleExact
 import com.apollographql.apollo3.api.json.internal.toIntExact
 import com.apollographql.apollo3.api.json.internal.toLongExact
 import com.apollographql.apollo3.exception.JsonDataException
 import kotlin.jvm.JvmOverloads
+
+class MapJsonReader @JvmOverloads constructor(
+    root: Map<String, Any?>,
+    pathRoot: List<Any> = emptyList(),
+) : MapishJsonReader<Map<String, Any?>>(
+    root = root,
+    pathRoot = pathRoot
+) {
+  override fun anyToToken(any: Any?) = when (any) {
+    null -> JsonReader.Token.NULL
+    is List<*> -> JsonReader.Token.BEGIN_ARRAY
+    is Map<*, *> -> JsonReader.Token.BEGIN_OBJECT
+    is Int -> JsonReader.Token.NUMBER
+    is Long -> JsonReader.Token.LONG
+    is Double -> JsonReader.Token.NUMBER
+    is JsonNumber -> JsonReader.Token.NUMBER
+    is String -> JsonReader.Token.STRING
+    is Boolean -> JsonReader.Token.BOOLEAN
+    else -> JsonReader.Token.ANY
+  }
+
+  override fun getArrayIterator(container: Any): Iterator<Any?> {
+    return (container as List<Any?>).iterator()
+  }
+
+  override fun getMapIterator(container: Map<String, Any?>): Iterator<Map.Entry<String, Any?>> {
+    return container.iterator()
+  }
+}
 
 /**
  * A [JsonReader] that reads data from a regular [Map<String, Any?>]
@@ -28,12 +56,16 @@ import kotlin.jvm.JvmOverloads
  * @param root the root [Map] to read from
  * @param pathRoot the path root to be prefixed to the returned path when calling [getPath]. Useful for [buffer].
  */
-class MapJsonReader
-@JvmOverloads
+abstract class MapishJsonReader<TMap>
 constructor(
-    val root: Map<String, Any?>,
-    private val pathRoot: List<Any> = emptyList(),
+    val root: TMap,
+    private val pathRoot: Collection<Any>,
 ) : JsonReader {
+
+
+  abstract fun anyToToken(any: Any?): JsonReader.Token
+  abstract fun getMapIterator(container: TMap): Iterator<Map.Entry<String, Any?>>
+  abstract fun getArrayIterator(container: Any): Iterator<Any?>
 
   private var peekedToken: JsonReader.Token
 
@@ -55,7 +87,7 @@ constructor(
   /**
    * The current object memorized in case we need to rewind
    */
-  private var containerStack = arrayOfNulls<Map<String, Any?>>(MAX_STACK_SIZE)
+  private var containerStack = arrayOfNulls<Any?>(MAX_STACK_SIZE)
   private val iteratorStack = arrayOfNulls<Iterator<*>>(MAX_STACK_SIZE)
   private val nameIndexStack = IntArray(MAX_STACK_SIZE)
 
@@ -64,19 +96,6 @@ constructor(
   init {
     peekedToken = JsonReader.Token.BEGIN_OBJECT
     peekedData = root
-  }
-
-  private fun anyToToken(any: Any?) = when (any) {
-    null -> JsonReader.Token.NULL
-    is List<*> -> JsonReader.Token.BEGIN_ARRAY
-    is Map<*, *> -> JsonReader.Token.BEGIN_OBJECT
-    is Int -> JsonReader.Token.NUMBER
-    is Long -> JsonReader.Token.LONG
-    is Double -> JsonReader.Token.NUMBER
-    is JsonNumber -> JsonReader.Token.NUMBER
-    is String -> JsonReader.Token.STRING
-    is Boolean -> JsonReader.Token.BOOLEAN
-    else -> JsonReader.Token.ANY
   }
 
   /**
@@ -118,15 +137,13 @@ constructor(
       throw JsonDataException("Expected BEGIN_ARRAY but was ${peek()} at path ${getPathAsString()}")
     }
 
-    val currentValue = peekedData as List<Any?>
-
     check(stackSize < MAX_STACK_SIZE) {
       "Nesting too deep"
     }
     stackSize++
 
     path[stackSize - 1] = -1
-    iteratorStack[stackSize - 1] = currentValue.iterator()
+    iteratorStack[stackSize - 1] = getArrayIterator(peekedData!!)
     advanceIterator()
   }
 
@@ -150,7 +167,7 @@ constructor(
     }
     stackSize++
     @Suppress("UNCHECKED_CAST")
-    containerStack[stackSize - 1] = peekedData as Map<String, Any?>
+    containerStack[stackSize - 1] = peekedData as TMap
 
     rewind()
   }
@@ -377,9 +394,10 @@ constructor(
    * Rewinds to the beginning of the current object.
    */
   override fun rewind() {
-    val container = containerStack[stackSize - 1]
+    @Suppress("UNCHECKED_CAST")
+    val container = containerStack[stackSize - 1] as TMap
     path[stackSize - 1] = null
-    iteratorStack[stackSize - 1] = container!!.iterator()
+    iteratorStack[stackSize - 1] = getMapIterator(container)
     nameIndexStack[stackSize - 1] = 0
     advanceIterator()
   }
@@ -394,6 +412,7 @@ constructor(
   }
 
   private fun getPathAsString() = getPath().joinToString(".")
+
 
   companion object {
 

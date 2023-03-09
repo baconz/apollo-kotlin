@@ -5,8 +5,8 @@ package com.apollographql.apollo3.api
 import com.apollographql.apollo3.api.json.JsonReader
 import com.apollographql.apollo3.api.json.JsonWriter
 import com.apollographql.apollo3.api.json.MapJsonReader
-import com.apollographql.apollo3.api.json.MapJsonReader.Companion.buffer
 import com.apollographql.apollo3.api.json.MapJsonWriter
+import com.apollographql.apollo3.api.json.MapishJsonReader.Companion.buffer
 import com.apollographql.apollo3.api.json.buildJsonString
 import com.apollographql.apollo3.api.json.readAny
 import com.apollographql.apollo3.api.json.writeAny

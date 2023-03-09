@@ -17,6 +17,7 @@ import com.apollographql.apollo3.runtime.java.ApolloCallback;
 import com.apollographql.apollo3.runtime.java.ApolloDisposable;
 import com.apollographql.apollo3.runtime.java.network.NetworkTransport;
 import com.apollographql.apollo3.runtime.java.network.http.internal.DefaultHttpInterceptorChain;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

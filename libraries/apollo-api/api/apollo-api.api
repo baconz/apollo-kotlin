@@ -1090,40 +1090,13 @@ public abstract interface class com/apollographql/apollo3/api/json/JsonWriter : 
 	public abstract fun value (Z)Lcom/apollographql/apollo3/api/json/JsonWriter;
 }
 
-public final class com/apollographql/apollo3/api/json/MapJsonReader : com/apollographql/apollo3/api/json/JsonReader {
-	public static final field Companion Lcom/apollographql/apollo3/api/json/MapJsonReader$Companion;
+public final class com/apollographql/apollo3/api/json/MapJsonReader : com/apollographql/apollo3/api/json/MapishJsonReader {
 	public fun <init> (Ljava/util/Map;)V
 	public fun <init> (Ljava/util/Map;Ljava/util/List;)V
 	public synthetic fun <init> (Ljava/util/Map;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun beginArray ()Lcom/apollographql/apollo3/api/json/JsonReader;
-	public fun beginArray ()Lcom/apollographql/apollo3/api/json/MapJsonReader;
-	public synthetic fun beginObject ()Lcom/apollographql/apollo3/api/json/JsonReader;
-	public fun beginObject ()Lcom/apollographql/apollo3/api/json/MapJsonReader;
-	public fun close ()V
-	public synthetic fun endArray ()Lcom/apollographql/apollo3/api/json/JsonReader;
-	public fun endArray ()Lcom/apollographql/apollo3/api/json/MapJsonReader;
-	public synthetic fun endObject ()Lcom/apollographql/apollo3/api/json/JsonReader;
-	public fun endObject ()Lcom/apollographql/apollo3/api/json/MapJsonReader;
-	public fun getPath ()Ljava/util/List;
-	public final fun getRoot ()Ljava/util/Map;
-	public fun hasNext ()Z
-	public fun nextBoolean ()Z
-	public fun nextDouble ()D
-	public fun nextInt ()I
-	public fun nextLong ()J
-	public fun nextName ()Ljava/lang/String;
-	public fun nextNull ()Ljava/lang/Void;
-	public fun nextNumber ()Lcom/apollographql/apollo3/api/json/JsonNumber;
-	public fun nextString ()Ljava/lang/String;
-	public final fun nextValue ()Ljava/lang/Object;
-	public fun peek ()Lcom/apollographql/apollo3/api/json/JsonReader$Token;
-	public fun rewind ()V
-	public fun selectName (Ljava/util/List;)I
-	public fun skipValue ()V
-}
-
-public final class com/apollographql/apollo3/api/json/MapJsonReader$Companion {
-	public final fun buffer (Lcom/apollographql/apollo3/api/json/JsonReader;)Lcom/apollographql/apollo3/api/json/MapJsonReader;
+	public fun anyToToken (Ljava/lang/Object;)Lcom/apollographql/apollo3/api/json/JsonReader$Token;
+	public synthetic fun getIterator (Ljava/lang/Object;)Ljava/util/Iterator;
+	public fun getIterator (Ljava/util/Map;)Ljava/util/Iterator;
 }
 
 public final class com/apollographql/apollo3/api/json/MapJsonWriter : com/apollographql/apollo3/api/json/JsonWriter {
@@ -1154,6 +1127,42 @@ public final class com/apollographql/apollo3/api/json/MapJsonWriter : com/apollo
 	public fun value (Ljava/lang/String;)Lcom/apollographql/apollo3/api/json/MapJsonWriter;
 	public synthetic fun value (Z)Lcom/apollographql/apollo3/api/json/JsonWriter;
 	public fun value (Z)Lcom/apollographql/apollo3/api/json/MapJsonWriter;
+}
+
+public abstract class com/apollographql/apollo3/api/json/MapishJsonReader : com/apollographql/apollo3/api/json/JsonReader {
+	public static final field Companion Lcom/apollographql/apollo3/api/json/MapishJsonReader$Companion;
+	public fun <init> (Ljava/lang/Object;Ljava/util/Collection;)V
+	public abstract fun anyToToken (Ljava/lang/Object;)Lcom/apollographql/apollo3/api/json/JsonReader$Token;
+	public synthetic fun beginArray ()Lcom/apollographql/apollo3/api/json/JsonReader;
+	public fun beginArray ()Lcom/apollographql/apollo3/api/json/MapishJsonReader;
+	public synthetic fun beginObject ()Lcom/apollographql/apollo3/api/json/JsonReader;
+	public fun beginObject ()Lcom/apollographql/apollo3/api/json/MapishJsonReader;
+	public fun close ()V
+	public synthetic fun endArray ()Lcom/apollographql/apollo3/api/json/JsonReader;
+	public fun endArray ()Lcom/apollographql/apollo3/api/json/MapishJsonReader;
+	public synthetic fun endObject ()Lcom/apollographql/apollo3/api/json/JsonReader;
+	public fun endObject ()Lcom/apollographql/apollo3/api/json/MapishJsonReader;
+	public abstract fun getIterator (Ljava/lang/Object;)Ljava/util/Iterator;
+	public fun getPath ()Ljava/util/List;
+	public final fun getRoot ()Ljava/lang/Object;
+	public fun hasNext ()Z
+	public fun nextBoolean ()Z
+	public fun nextDouble ()D
+	public fun nextInt ()I
+	public fun nextLong ()J
+	public fun nextName ()Ljava/lang/String;
+	public fun nextNull ()Ljava/lang/Void;
+	public fun nextNumber ()Lcom/apollographql/apollo3/api/json/JsonNumber;
+	public fun nextString ()Ljava/lang/String;
+	public final fun nextValue ()Ljava/lang/Object;
+	public fun peek ()Lcom/apollographql/apollo3/api/json/JsonReader$Token;
+	public fun rewind ()V
+	public fun selectName (Ljava/util/List;)I
+	public fun skipValue ()V
+}
+
+public final class com/apollographql/apollo3/api/json/MapishJsonReader$Companion {
+	public final fun buffer (Lcom/apollographql/apollo3/api/json/JsonReader;)Lcom/apollographql/apollo3/api/json/MapJsonReader;
 }
 
 public abstract interface annotation class com/apollographql/apollo3/api/test/ApolloTestBuilderMarker : java/lang/annotation/Annotation {

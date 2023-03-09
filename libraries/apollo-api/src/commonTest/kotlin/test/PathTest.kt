@@ -14,7 +14,7 @@ import com.apollographql.apollo3.api.json.JsonReader.Token.NULL
 import com.apollographql.apollo3.api.json.JsonReader.Token.NUMBER
 import com.apollographql.apollo3.api.json.JsonReader.Token.STRING
 import com.apollographql.apollo3.api.json.JsonReader.Token.ANY
-import com.apollographql.apollo3.api.json.MapJsonReader.Companion.buffer
+import com.apollographql.apollo3.api.json.MapishJsonReader.Companion.buffer
 import okio.Buffer
 import okio.ByteString.Companion.encodeUtf8
 import kotlin.test.Test
