@@ -4,6 +4,12 @@ package com.apollographql.apollo3.api.json
 @Suppress("NOTHING_TO_INLINE")
 private inline fun objectKeys(json: dynamic) = js("Object").keys(json).unsafeCast<Array<String>>()
 
+
+class DynamicMapEntry<K, V>(
+    override val key: K,
+    override val value: V
+) : Map.Entry<K, V>
+
 /**
  * A [JsonReader] that reads data from a regular JS `dynamic` object.
  *
@@ -22,11 +28,6 @@ private inline fun objectKeys(json: dynamic) = js("Object").keys(json).unsafeCas
  * TODO Note: We can probably safely remove the non-JS primitives (ie Long, Double, JsonNumber)
  *
  */
-class DynamicMapEntry<K, V>(
-    override val key: K,
-    override val value: V
-) : Map.Entry<K, V>
-
 class DynamicJsJsonReader constructor(
     root: dynamic,
     pathRoot: List<Any> = emptyList(),
