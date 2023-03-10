@@ -232,9 +232,9 @@ public final class com/apollographql/apollo3/network/http/BatchingHttpIntercepto
 }
 
 public final class com/apollographql/apollo3/network/http/DefaultHttpEngine : com/apollographql/apollo3/network/http/HttpEngine {
-	public fun <init> (J)V
-	public synthetic fun <init> (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun <init> (JJ)V
+	public fun <init> (JZ)V
+	public synthetic fun <init> (JZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun <init> (Lokhttp3/Call$Factory;)V
 	public fun <init> (Lokhttp3/OkHttpClient;)V
 	public fun dispose ()V

@@ -18,16 +18,14 @@ import io.ktor.utils.io.CancellationException
 import okio.Buffer
 
 
-actual class DefaultHttpEngine constructor(private val connectTimeoutMillis: Long, private val readTimeoutMillis: Long) : HttpEngine {
+class KtorHttpEngine constructor(private val connectTimeoutMillis: Long, private val readTimeoutMillis: Long) : HttpEngine {
   var disposed = false
-
-  actual constructor(timeoutMillis: Long) : this(timeoutMillis, timeoutMillis)
 
   private val client = HttpClient(Js) {
     expectSuccess = false
     install(HttpTimeout) {
-      this.connectTimeoutMillis = this@DefaultHttpEngine.connectTimeoutMillis
-      this.socketTimeoutMillis = this@DefaultHttpEngine.readTimeoutMillis
+      this.connectTimeoutMillis = this@KtorHttpEngine.connectTimeoutMillis
+      this.socketTimeoutMillis = this@KtorHttpEngine.readTimeoutMillis
     }
   }
 

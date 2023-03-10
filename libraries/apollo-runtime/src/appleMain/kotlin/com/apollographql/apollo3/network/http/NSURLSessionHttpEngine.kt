@@ -36,7 +36,7 @@ actual class DefaultHttpEngine constructor(
     private val dataTaskFactory: DataTaskFactory,
 ) : HttpEngine {
 
-  actual constructor(timeoutMillis: Long) : this(timeoutMillis, DefaultDataTaskFactory())
+  actual constructor(timeoutMillis: Long, useBrowserOnlyJsEngine: Boolean) : this(timeoutMillis, DefaultDataTaskFactory())
 
   @Suppress("UNCHECKED_CAST")
   override suspend fun execute(request: HttpRequest): HttpResponse = suspendCancellableCoroutine { continuation ->

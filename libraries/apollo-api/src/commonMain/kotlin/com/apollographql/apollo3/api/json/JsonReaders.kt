@@ -3,8 +3,15 @@
 package com.apollographql.apollo3.api.json
 
 import com.apollographql.apollo3.annotations.ApolloInternal
+import com.apollographql.apollo3.api.http.HttpResponse
 import okio.BufferedSource
 import kotlin.jvm.JvmName
+
+expect fun HttpResponse.jsonReader(): JsonReader
+
+fun HttpResponse.defaultJsonReader(): JsonReader {
+  return body!!.jsonReader()
+}
 
 fun BufferedSource.jsonReader(): JsonReader {
   return BufferedSourceJsonReader(this)

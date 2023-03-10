@@ -121,6 +121,7 @@ private constructor(
      * Prefer [bodySource] on so that the response can be streamed.
      */
     private val bodyString: ByteString?,
+    val bodyDynamic: Any? = null,
 ) {
 
   val body: BufferedSource?
@@ -140,9 +141,10 @@ private constructor(
   ) {
     private var bodySource: BufferedSource? = null
     private var bodyString: ByteString? = null
+    private var bodyDynamic: Any? = null
     private val headers = mutableListOf<HttpHeader>()
     private val hasBody: Boolean
-      get() = bodySource != null || bodyString != null
+      get() = bodySource != null || bodyString != null || bodyDynamic != null
 
     /**
      * A streamable body.
@@ -150,6 +152,11 @@ private constructor(
     fun body(bodySource: BufferedSource) = apply {
       check(!hasBody) { "body() can only be called once" }
       this.bodySource = bodySource
+    }
+
+    fun dynamicBody(bodyDynamic: Any?) = apply {
+      check(!hasBody) { "can only assign a singly body" }
+      this.bodyDynamic = bodyDynamic
     }
 
     /**
@@ -183,6 +190,7 @@ private constructor(
           headers = headers,
           bodySource = bodySource,
           bodyString = bodyString,
+          bodyDynamic = bodyDynamic,
       )
     }
   }

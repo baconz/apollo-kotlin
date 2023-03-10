@@ -136,7 +136,7 @@ private constructor(
   ): Flow<ApolloResponse<D>> {
     val response = try {
       operation.parseJsonResponse(
-          jsonReader = httpResponse.body!!.jsonReader(),
+          jsonReader = httpResponse.jsonReader(),
           customScalarAdapters = customScalarAdapters
       )
     } catch (e: Exception) {

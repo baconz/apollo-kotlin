@@ -36,7 +36,7 @@ interface HttpEngine {
  * - on Android, it is used to set both [OkHttpClient.connectTimeout] and [OkHttpClient.readTimeout]
  * - on Js, it is used to set both connectTimeoutMillis, and socketTimeoutMillis
  */
-expect class DefaultHttpEngine(timeoutMillis: Long = 60_000): HttpEngine
+expect class DefaultHttpEngine(timeoutMillis: Long = 60_000, useBrowserOnlyJsEngine: Boolean = false): HttpEngine
 
 fun HttpEngine.get(url: String) = HttpCall(this, HttpMethod.Get, url)
 fun HttpEngine.post(url: String) = HttpCall(this, HttpMethod.Post, url)

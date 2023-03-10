@@ -26,7 +26,7 @@ actual class DefaultHttpEngine constructor(
   // an overload that takes an OkHttpClient for easier discovery
   constructor(okHttpClient: OkHttpClient) : this(okHttpClient as Call.Factory)
 
-  actual constructor(timeoutMillis: Long) : this(timeoutMillis, timeoutMillis)
+  actual constructor(timeoutMillis: Long, useBrowserOnlyJsEngine: Boolean) : this(timeoutMillis, timeoutMillis)
 
   constructor(connectTimeout: Long, readTimeout: Long) : this(
       OkHttpClient.Builder()

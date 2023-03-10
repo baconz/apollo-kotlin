@@ -935,8 +935,9 @@ public abstract interface class com/apollographql/apollo3/api/http/HttpRequestCo
 }
 
 public final class com/apollographql/apollo3/api/http/HttpResponse {
-	public synthetic fun <init> (ILjava/util/List;Lokio/BufferedSource;Lokio/ByteString;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ILjava/util/List;Lokio/BufferedSource;Lokio/ByteString;Ljava/lang/Object;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getBody ()Lokio/BufferedSource;
+	public final fun getBodyDynamic ()Ljava/lang/Object;
 	public final fun getHeaders ()Ljava/util/List;
 	public final fun getStatusCode ()I
 	public final fun newBuilder ()Lcom/apollographql/apollo3/api/http/HttpResponse$Builder;
@@ -949,11 +950,13 @@ public final class com/apollographql/apollo3/api/http/HttpResponse$Builder {
 	public final fun body (Lokio/BufferedSource;)Lcom/apollographql/apollo3/api/http/HttpResponse$Builder;
 	public final fun body (Lokio/ByteString;)Lcom/apollographql/apollo3/api/http/HttpResponse$Builder;
 	public final fun build ()Lcom/apollographql/apollo3/api/http/HttpResponse;
+	public final fun dynamicBody (Ljava/lang/Object;)Lcom/apollographql/apollo3/api/http/HttpResponse$Builder;
 	public final fun getStatusCode ()I
 	public final fun headers (Ljava/util/List;)Lcom/apollographql/apollo3/api/http/HttpResponse$Builder;
 }
 
 public final class com/apollographql/apollo3/api/json/-JsonReaders {
+	public static final fun defaultJsonReader (Lcom/apollographql/apollo3/api/http/HttpResponse;)Lcom/apollographql/apollo3/api/json/JsonReader;
 	public static final fun jsonReader (Ljava/util/Map;)Lcom/apollographql/apollo3/api/json/JsonReader;
 	public static final fun jsonReader (Lokio/BufferedSource;)Lcom/apollographql/apollo3/api/json/JsonReader;
 }
@@ -1068,6 +1071,10 @@ public final class com/apollographql/apollo3/api/json/JsonReader$Token : java/la
 	public static fun values ()[Lcom/apollographql/apollo3/api/json/JsonReader$Token;
 }
 
+public final class com/apollographql/apollo3/api/json/JsonReaderKt {
+	public static final fun jsonReader (Lcom/apollographql/apollo3/api/http/HttpResponse;)Lcom/apollographql/apollo3/api/json/JsonReader;
+}
+
 public final class com/apollographql/apollo3/api/json/JsonReaders {
 	public static final fun readTypename (Lcom/apollographql/apollo3/api/json/JsonReader;)Ljava/lang/String;
 }
@@ -1095,8 +1102,9 @@ public final class com/apollographql/apollo3/api/json/MapJsonReader : com/apollo
 	public fun <init> (Ljava/util/Map;Ljava/util/List;)V
 	public synthetic fun <init> (Ljava/util/Map;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun anyToToken (Ljava/lang/Object;)Lcom/apollographql/apollo3/api/json/JsonReader$Token;
-	public synthetic fun getIterator (Ljava/lang/Object;)Ljava/util/Iterator;
-	public fun getIterator (Ljava/util/Map;)Ljava/util/Iterator;
+	public fun getArrayIterator (Ljava/lang/Object;)Ljava/util/Iterator;
+	public synthetic fun getMapIterator (Ljava/lang/Object;)Ljava/util/Iterator;
+	public fun getMapIterator (Ljava/util/Map;)Ljava/util/Iterator;
 }
 
 public final class com/apollographql/apollo3/api/json/MapJsonWriter : com/apollographql/apollo3/api/json/JsonWriter {
@@ -1142,7 +1150,8 @@ public abstract class com/apollographql/apollo3/api/json/MapishJsonReader : com/
 	public fun endArray ()Lcom/apollographql/apollo3/api/json/MapishJsonReader;
 	public synthetic fun endObject ()Lcom/apollographql/apollo3/api/json/JsonReader;
 	public fun endObject ()Lcom/apollographql/apollo3/api/json/MapishJsonReader;
-	public abstract fun getIterator (Ljava/lang/Object;)Ljava/util/Iterator;
+	public abstract fun getArrayIterator (Ljava/lang/Object;)Ljava/util/Iterator;
+	public abstract fun getMapIterator (Ljava/lang/Object;)Ljava/util/Iterator;
 	public fun getPath ()Ljava/util/List;
 	public final fun getRoot ()Ljava/lang/Object;
 	public fun hasNext ()Z
