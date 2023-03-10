@@ -16,13 +16,13 @@ import kotlinx.coroutines.await
 import okio.Buffer
 import org.w3c.fetch.Headers
 
-fun Headers.toHeadersList(): List<HttpHeader> {
+private fun Headers.toHeadersList(): List<HttpHeader> {
   return js("Array").from(this.asDynamic().entries()).unsafeCast<Array<Array<String>>>().map { HttpHeader(it[0], it[1]) }
 }
 
-internal fun <T> buildObject(block: T.() -> Unit): T = (js("{}") as T).apply(block)
+private fun <T> buildObject(block: T.() -> Unit): T = (js("{}") as T).apply(block)
 
-internal fun AbortController(): AbortController {
+private fun AbortController(): AbortController {
   return if (PlatformUtils.IS_BROWSER) {
     js("new AbortController()")
   } else {
@@ -32,7 +32,7 @@ internal fun AbortController(): AbortController {
   }
 }
 
-fun HttpRequest.toRaw(abortSignal: AbortSignal): RequestInit {
+private fun HttpRequest.toRaw(abortSignal: AbortSignal): RequestInit {
   val bodyBuffer = Buffer()
 
   val rawHeaders = headers.map { arrayOf(it.name, it.value) }.toMutableList()
@@ -53,7 +53,14 @@ fun HttpRequest.toRaw(abortSignal: AbortSignal): RequestInit {
   }
 }
 
-class FastJsHttpEngine : HttpEngine {
+/**
+ * An [HttpEngine] that calls fetch directly and uses the browser's native JSON parsing
+ * capabilities and then passes the parse JSON into [DynamicJsJsonReader]. In testing, we
+ * see a 4-5x performance improvement using this over [KtorHttpEngine]. On the whole, it is still
+ * ~1/2 the speed of the native JS apollo client.
+ *
+ */
+class FastBrowserJsHttpEngine : HttpEngine {
   private var disposed = false
   private val controller = AbortController()
 

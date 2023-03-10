@@ -1,12 +1,29 @@
 package com.apollographql.apollo3.api.json
 
 import com.apollographql.apollo3.api.json.BufferedSourceJsonReader.Companion.MAX_STACK_SIZE
+import com.apollographql.apollo3.api.json.MapishJsonReader.Companion.buffer
 import com.apollographql.apollo3.api.json.internal.toDoubleExact
 import com.apollographql.apollo3.api.json.internal.toIntExact
 import com.apollographql.apollo3.api.json.internal.toLongExact
 import com.apollographql.apollo3.exception.JsonDataException
 import kotlin.jvm.JvmOverloads
 
+/**
+ * A [JsonReader] that reads data from a regular [Map<String, Any?>]
+ *
+ * Map values should be any of:
+ * - String
+ * - Int
+ * - Double
+ * - Long
+ * - JsonNumber
+ * - null
+ * - Map<String, Any?> where values are any of these values recursively
+ * - List<Any?> where values are any of these values recursively
+ *
+ * Anything else is undefined
+ *
+ */
 class MapJsonReader @JvmOverloads constructor(
     root: Map<String, Any?>,
     pathRoot: List<Any> = emptyList(),
@@ -37,19 +54,8 @@ class MapJsonReader @JvmOverloads constructor(
 }
 
 /**
- * A [JsonReader] that reads data from a regular [Map<String, Any?>]
- *
- * Map values should be any of:
- * - String
- * - Int
- * - Double
- * - Long
- * - JsonNumber
- * - null
- * - Map<String, Any?> where values are any of these values recursively
- * - List<Any?> where values are any of these values recursively
- *
- * Anything else is undefined
+ * A [JsonReader] that reads data from a type that looks like a Map. This can be either
+ * a standard [Map] (see [MapJsonReader]), or a `dynamic` (see [DynamicJsJsonReader]).
  *
  * To read from a [okio.BufferedSource], see also [BufferedSourceJsonReader]
  *

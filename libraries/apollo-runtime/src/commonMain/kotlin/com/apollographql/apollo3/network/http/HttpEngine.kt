@@ -35,6 +35,9 @@ interface HttpEngine {
  * - on iOS, it is used to set [NSMutableURLRequest.timeoutIntervalForRequest]
  * - on Android, it is used to set both [OkHttpClient.connectTimeout] and [OkHttpClient.readTimeout]
  * - on Js, it is used to set both connectTimeoutMillis, and socketTimeoutMillis
+ *
+ * @param useBrowserOnlyJsEngine: This only applies to JS clients. If true, use a faster HttpEngine
+ * that is only compatible with Browser-based JS runtimes, and does not support timeouts.
  */
 expect class DefaultHttpEngine(timeoutMillis: Long = 60_000, useBrowserOnlyJsEngine: Boolean = false): HttpEngine
 
