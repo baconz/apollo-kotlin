@@ -25,8 +25,6 @@ class DynamicMapEntry<K, V>(
  *
  * Anything else is undefined
  *
- * TODO Note: We can probably safely remove the non-JS primitives (ie Long, Double, JsonNumber)
- *
  */
 class DynamicJsJsonReader constructor(
     root: dynamic,
